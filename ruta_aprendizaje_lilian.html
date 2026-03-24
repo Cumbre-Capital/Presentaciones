@@ -1,0 +1,680 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+
+.ruta-container {
+  padding: 24px 0 32px;
+  max-width: 680px;
+}
+
+.ruta-header {
+  margin-bottom: 28px;
+}
+
+.ruta-header h2 {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.ruta-header p {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.fase {
+  margin-bottom: 28px;
+}
+
+.fase-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius-md);
+  border-left: 3px solid;
+}
+
+.fase-1 .fase-header { background: #E6F1FB; border-color: #185FA5; }
+.fase-2 .fase-header { background: #E1F5EE; border-color: #0F6E56; }
+.fase-3 .fase-header { background: #FAEEDA; border-color: #854F0B; }
+.fase-4 .fase-header { background: #EEEDFE; border-color: #534AB7; }
+
+@media (prefers-color-scheme: dark) {
+  .fase-1 .fase-header { background: #042C53; border-color: #85B7EB; }
+  .fase-2 .fase-header { background: #04342C; border-color: #5DCAA5; }
+  .fase-3 .fase-header { background: #412402; border-color: #EF9F27; }
+  .fase-4 .fase-header { background: #26215C; border-color: #AFA9EC; }
+}
+
+.fase-num {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.fase-1 .fase-num { background: #185FA5; color: #E6F1FB; }
+.fase-2 .fase-num { background: #0F6E56; color: #E1F5EE; }
+.fase-3 .fase-num { background: #854F0B; color: #FAEEDA; }
+.fase-4 .fase-num { background: #534AB7; color: #EEEDFE; }
+
+@media (prefers-color-scheme: dark) {
+  .fase-1 .fase-num { background: #0C447C; color: #B5D4F4; }
+  .fase-2 .fase-num { background: #085041; color: #9FE1CB; }
+  .fase-3 .fase-num { background: #633806; color: #FAC775; }
+  .fase-4 .fase-num { background: #3C3489; color: #CECBF6; }
+}
+
+.fase-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.fase-subtitle {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.modulos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 0;
+}
+
+.modulo {
+  border: 1px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.modulo:hover {
+  border-color: var(--color-border-primary);
+}
+
+.modulo.open {
+  border-color: var(--color-border-secondary);
+}
+
+.modulo-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--color-background-secondary);
+}
+
+.modulo.open .modulo-header {
+  background: var(--color-background-primary);
+  border-bottom: 1px solid var(--color-border-tertiary);
+}
+
+.sesion-badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 8px;
+  background: var(--color-border-tertiary);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.modulo-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+.modulo-objetivo {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  flex: 1;
+  display: none;
+}
+
+.modulo-chevron {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.modulo.open .modulo-chevron {
+  transform: rotate(180deg);
+}
+
+.modulo-body {
+  display: none;
+  padding: 14px 16px;
+  background: var(--color-background-primary);
+}
+
+.modulo.open .modulo-body {
+  display: block;
+}
+
+.modulo-objetivo-full {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.5;
+  padding: 8px 10px;
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+  border-left: 2px solid var(--color-border-secondary);
+}
+
+.subsection {
+  margin-bottom: 12px;
+}
+
+.subsection-title {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-tertiary);
+  margin-bottom: 6px;
+}
+
+.temas-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.temas-list li {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  padding-left: 12px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.temas-list li::before {
+  content: "·";
+  position: absolute;
+  left: 2px;
+  color: var(--color-text-tertiary);
+}
+
+.recursos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recurso {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.recurso-tipo {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 1px 6px;
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.tipo-lectura { background: #B5D4F4; color: #0C447C; }
+.tipo-video { background: #F5C4B3; color: #712B13; }
+.tipo-herramienta { background: #C0DD97; color: #27500A; }
+.tipo-podcast { background: #F4C0D1; color: #72243E; }
+
+@media (prefers-color-scheme: dark) {
+  .tipo-lectura { background: #0C447C; color: #B5D4F4; }
+  .tipo-video { background: #712B13; color: #F5C4B3; }
+  .tipo-herramienta { background: #27500A; color: #C0DD97; }
+  .tipo-podcast { background: #72243E; color: #F4C0D1; }
+}
+
+.insight-box {
+  display: flex;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+  border-left: 2px solid #EF9F27;
+  margin-top: 10px;
+}
+
+.insight-icon {
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.insight-text {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.tarea-box {
+  display: flex;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+  border-left: 2px solid #1D9E75;
+  margin-top: 8px;
+}
+
+.tarea-text {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-border-tertiary);
+  margin: 8px 0;
+}
+</style>
+
+<div class="ruta-container">
+  <div class="ruta-header">
+    <h2>Ruta de aprendizaje financiero · Lilian</h2>
+    <p>4 fases · 8 sesiones · ~19 horas · material de estudio entre sesiones</p>
+  </div>
+
+  <!-- FASE 1 -->
+  <div class="fase fase-1">
+    <div class="fase-header">
+      <span class="fase-num">Fase 1</span>
+      <span class="fase-title">Diagnóstico y punto de partida</span>
+      <span class="fase-subtitle">Sesiones 1–2</span>
+    </div>
+    <div class="modulos">
+
+      <!-- Sesión 1 -->
+      <div class="modulo" onclick="toggle(this)">
+        <div class="modulo-header">
+          <span class="sesion-badge">Sesión 1 · 2.5h</span>
+          <span class="modulo-title">¿Dónde estoy parada? — Diagnóstico financiero y relación con el dinero</span>
+          <span class="modulo-chevron">▼</span>
+        </div>
+        <div class="modulo-body">
+          <div class="modulo-objetivo-full">Construir la fotografía financiera completa de Lilian e identificar sus creencias y emociones alrededor del dinero. Esta sesión combina números y psicología porque ambos son necesarios para que el plan funcione.</div>
+
+          <div class="subsection">
+            <div class="subsection-title">Temas de la sesión</div>
+            <ul class="temas-list">
+              <li>Exploración de su relación con el dinero (money scripts · Klontz): ¿qué le enseñaron sobre el dinero? ¿hay ansiedad, culpa, evitación?</li>
+              <li>Balance personal: activos (casa campestre + cuentas + pensión) vs. pasivos (hipoteca u otras deudas)</li>
+              <li>Flujo de caja mensual: ingresos fijos + bonos semestrales Baxter vs. gastos fijos y variables</li>
+              <li>6 indicadores clave: ratio de liquidez, endeudamiento, tasa de ahorro, cobertura de emergencia</li>
+              <li>Diagnóstico del bono semestral: ¿qué ha pasado con los bonos anteriores?</li>
+              <li>Primer "momento de verdad": la concentración patrimonial en la casa campestre</li>
+            </ul>
+          </div>
+
+          <div class="insight-box">
+            <span class="insight-icon">⚡</span>
+            <span class="insight-text">Pregunta clave a formular: <em>"Si hoy vendieran la casa, ¿con qué quedarían?"</em> Este ejercicio hace visible que gran parte del patrimonio familiar es ilíquido. No es para alarmar — es para despertar.</span>
+          </div>
+
+          <div class="divider"></div>
+          <div class="subsection">
+            <div class="subsection-title">Material entre sesiones (para Lilian)</div>
+            <div class="recursos">
+              <div class="recurso"><span class="recurso-tipo tipo-herramienta">Tarea</span>Completar la plantilla Excel de diagnóstico financiero (balance + flujo de caja) con todos los datos reales</div>
+              <div class="recurso"><span class="recurso-tipo tipo-lectura">Lectura</span><em>El dinero y tú</em> — artículo intro de Finanzas Personales Colombia (Bancolombia Insights). Lectura de 10 min.</div>
+              <div class="recurso"><span class="recurso-tipo tipo-video">Video</span>"¿Cuánto vale lo que tienes?" — video de Pesos y Contrapesos (YouTube Colombia). ~8 min.</div>
+            </div>
+          </div>
+
+          <div class="tarea-box">
+            <span class="insight-icon">✓</span>
+            <span class="tarea-text">Tarea concreta: llenar el cuestionario de diagnóstico y traer a la sesión 2 los estados de cuenta del mes pasado, el último comprobante de pensión y el recibo de la hipoteca (si aplica).</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sesión 2 -->
+      <div class="modulo" onclick="toggle(this)">
+        <div class="modulo-header">
+          <span class="sesion-badge">Sesión 2 · 2h</span>
+          <span class="modulo-title">El contexto que mueve tu dinero — Macro para no economistas</span>
+          <span class="modulo-chevron">▼</span>
+        </div>
+        <div class="modulo-body">
+          <div class="modulo-objetivo-full">Que Lilian entienda por qué su dinero en el banco pierde valor, qué hace el Banco de la República y cómo el dólar afecta su patrimonio. Todo explicado con impacto personal directo, sin jerga.</div>
+
+          <div class="subsection">
+            <div class="subsection-title">Temas de la sesión</div>
+            <ul class="temas-list">
+              <li>Inflación: la ladrona silenciosa — ejemplo real con los gastos de la familia en los últimos 3 años</li>
+              <li>Tasa repo BanRep: por qué hoy es momento de estar en renta fija de corto plazo</li>
+              <li>TRM: la devaluación y lo que significa para quienes piensan en educación exterior para sus hijos</li>
+              <li>Ciclo económico colombiano 2025–2026: tasas altas + inflación + peso apreciado = señales mixtas</li>
+              <li>Simulación: ¿cuánto compra hoy 1 millón de pesos vs. hace 5 años?</li>
+            </ul>
+          </div>
+
+          <div class="insight-box">
+            <span class="insight-icon">⚡</span>
+            <span class="insight-text">Ancla en lo concreto: los hijos de Lilian tienen 7 y 9 años. En 9–11 años estarán en universidad. Si esa universidad es en el exterior, el costo puede superar USD 200.000 por hijo. La macro no es abstracta — es la inflación educativa que ya está corriendo.</span>
+          </div>
+
+          <div class="divider"></div>
+          <div class="subsection">
+            <div class="subsection-title">Material entre sesiones</div>
+            <div class="recursos">
+              <div class="recurso"><span class="recurso-tipo tipo-lectura">Lectura</span>Dashboard macroeconómico Bancolombia / Corficolombiana — revisar inflación y tasa repo actuales. 5 min.</div>
+              <div class="recurso"><span class="recurso-tipo tipo-video">Video</span>"¿Qué hace el Banco de la República?" — Canal Banco de la República YouTube. ~12 min.</div>
+              <div class="recurso"><span class="recurso-tipo tipo-podcast">Podcast</span><em>Finanzas para Mortales</em> — episodio sobre inflación real vs. nominal (Spotify Colombia).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FASE 2 -->
+  <div class="fase fase-2">
+    <div class="fase-header">
+      <span class="fase-num">Fase 2</span>
+      <span class="fase-title">Instrumentos y vehículos de inversión</span>
+      <span class="fase-subtitle">Sesiones 3–4</span>
+    </div>
+    <div class="modulos">
+
+      <!-- Sesión 3 -->
+      <div class="modulo" onclick="toggle(this)">
+        <div class="modulo-header">
+          <span class="sesion-badge">Sesión 3 · 2h</span>
+          <span class="modulo-title">El menú colombiano — CDTs, FICs, pensiones voluntarias y seguros</span>
+          <span class="modulo-chevron">▼</span>
+        </div>
+        <div class="modulo-body">
+          <div class="modulo-objetivo-full">Conocer los instrumentos de inversión disponibles en Colombia, sus riesgos, rendimientos reales y beneficios tributarios. Esta sesión incluye al asesor AMV de Skandia para pensiones voluntarias y seguros.</div>
+
+          <div class="subsection">
+            <div class="subsection-title">Temas de la sesión</div>
+            <ul class="temas-list">
+              <li>CDTs: rentabilidad real hoy (tasa repo 10,25% — inflación 5,29% = ~4,7% real). ¿Tiene sentido a corto plazo?</li>
+              <li>Fondos de Inversión Colectiva (FICs): renta fija, balanceados, inmobiliarios. Comparativo de comisiones</li>
+              <li>Pensión voluntaria Skandia Multifund: estructura, 6 alternativas, beneficio tributario real en pesos</li>
+              <li>Cálculo práctico: cuánto puede ahorrar en impuestos Lilian aportando a pensión voluntaria (basado en su ingreso)</li>
+              <li>Cuentas AFC: para compra de vivienda o inversión inmobiliaria futura</li>
+              <li>Seguros de vida y salud para altos ingresos: Skandia Crea + complementario de salud. El seguro como herramienta patrimonial, no como gasto</li>
+            </ul>
+          </div>
+
+          <div class="insight-box">
+            <span class="insight-icon">⚡</span>
+            <span class="insight-text">Momento de impacto: calcular en vivo cuánto dinero "desaparece" en impuestos hoy de los bonos semestrales de Baxter — y cuánto de eso podría quedarse en su bolsillo con pensión voluntaria. Este número suele sorprender.</span>
+          </div>
+
+          <div class="divider"></div>
+          <div class="subsection">
+            <div class="subsection-title">Material entre sesiones</div>
+            <div class="recursos">
+              <div class="recurso"><span class="recurso-tipo tipo-herramienta">Herramienta</span>Calculadora de beneficio tributario pensión voluntaria — Porvenir o Skandia (disponible online). Ingresar sus datos reales.</div>
+              <div class="recurso"><span class="recurso-tipo tipo-lectura">Lectura</span>"Pensiones voluntarias: el escudo tributario que pocos usan" — artículo Portafolio Colombia.</div>
+              <div class="recurso"><span class="recurso-tipo tipo-video">Video</span>"Cómo funcionan los FICs en Colombia" — Bancolombia Academy. ~15 min.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sesión 4 -->
+      <div class="modulo" onclick="toggle(this)">
+        <div class="modulo-header">
+          <span class="sesion-badge">Sesión 4 · 2h</span>
+          <span class="modulo-title">El menú internacional — ETFs, índices globales y diversificación en dólares</span>
+          <span class="modulo-chevron">▼</span>
+        </div>
+        <div class="modulo-body">
+          <div class="modulo-objetivo-full">Entender cómo acceder a mercados globales desde Colombia. Por qué tener dólares no es especular, sino proteger. Cuáles son las opciones reales y accesibles hoy.</div>
+
+          <div class="subsection">
+            <div class="subsection-title">Temas de la sesión</div>
+            <ul class="temas-list">
+              <li>¿Por qué invertir en el exterior? El home bias colombiano y el costo de quedarse solo en COP</li>
+              <li>ETFs: qué son, cómo funcionan, por qué son el vehículo más eficiente para ella (VTI, VXUS, VT, BND)</li>
+              <li>ETFs domiciliados en Irlanda vs. EE.UU.: la diferencia tributaria del 30% de retención en dividendos (sin tratado Colombia-EE.UU.)</li>
+              <li>Cómo abrir una cuenta en Interactive Brokers o Charles Schwab desde Colombia. Proceso paso a paso.</li>
+              <li>Declaración de activos en el exterior ante la DIAN: cuándo aplica y qué implica</li>
+              <li>El dólar como cobertura natural: si los hijos van a estudiar en el exterior, tener USD es la cobertura más simple</li>
+            </ul>
+          </div>
+
+          <div class="insight-box">
+            <span class="insight-icon">⚡</span>
+            <span class="insight-text">Ancla personal: en 2024, el peso colombiano se apreció ~15%. Ese es el momento ideal para comprar dólares. Lilian necesita entender que la diversificación cambiaria no es sobre especular con la TRM — es sobre proteger el costo real de la educación de sus hijos si estudian fuera.</span>
+          </div>
+
+          <div class="divider"></div>
+          <div class="subsection">
+            <div class="subsection-title">Material entre sesiones</div>
+            <div class="recursos">
+              <div class="recurso"><span class="recurso-tipo tipo-video">Video</span>"¿Qué es un ETF?" — Ray Dalio / Bridgewater explicado simple (YouTube subtitulado). ~10 min.</div>
+              <div class="recurso"><span class="recurso-tipo tipo-lectura">Lectura</span>"Cómo invertir en ETFs desde Colombia" — Rankia Colombia. Guía práctica actualizada 2026.</div>
+              <div class="recurso"><span class="recurso-tipo tipo-herramienta">Tarea</span>Revisar el sitio de Interactive Brokers y explorar el proceso de apertura de cuenta. Solo explorar, no abrir aún.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FASE 3 -->
+  <div class="fase fase-3">
+    <div class="fase-header">
+      <span class="fase-num">Fase 3</span>
+      <span class="fase-title">Construir el portafolio de Lilian</span>
+      <span class="fase-subtitle">Sesión 5</span>
+    </div>
+    <div class="modulos">
+
+      <!-- Sesión 5 -->
+      <div class="modulo" onclick="toggle(this)">
+        <div class="modulo-header">
+          <span class="sesion-badge">Sesión 5 · 2.5h</span>
+          <span class="modulo-title">El portafolio de Lilian — asset allocation por metas y horizontes</span>
+          <span class="modulo-chevron">▼</span>
+        </div>
+        <div class="modulo-body">
+          <div class="modulo-objetivo-full">Diseñar el portafolio real de Lilian, con montos concretos, instrumentos específicos y horizontes alineados a sus metas: educación de los hijos, retiro, fondo de emergencia, y crecimiento patrimonial más allá de la casa.</div>
+
+          <div class="subsection">
+            <div class="subsection-title">Temas de la sesión</div>
+            <ul class="temas-list">
+              <li>Perfil de riesgo formal (cuestionario) + calibración según etapa de vida: consolidación (35–50 años), moderado-agresivo</li>
+              <li>Estructura de tres tramos: liquidez (0–2 años), metas de mediano plazo (2–7 años: educación hijos), largo plazo (7+ años: retiro)</li>
+              <li>Meta educación: cálculo del capital necesario para 2 hijos en universidades colombianas o en el exterior. Aporte mensual recomendado.</li>
+              <li>Estrategia para los bonos semestrales Baxter: cómo convertir flujo irregular en inversión sistemática (destinar % fijo a cada tramo)</li>
+              <li>Asset allocation propuesto con montos reales: CDTs corto plazo + FIC renta fija + pensión voluntaria + ETFs globales</li>
+              <li>Política de rebalanceo: semestral (coincide con el ciclo de bonos Baxter)</li>
+            </ul>
+          </div>
+
+          <div class="insight-box">
+            <span class="insight-icon">⚡</span>
+            <span class="insight-text">Los bonos semestrales de Baxter son una oportunidad estructural. Muchas personas los gastan o los dejan en cuenta corriente. Diseñar un "protocolo del bono" — qué porcentaje va a cada tramo — es uno de los cambios de mayor impacto que puede hacer Lilian.</span>
+          </div>
+
+          <div class="divider"></div>
+          <div class="subsection">
+            <div class="subsection-title">Material entre sesiones</div>
+            <div class="recursos">
+              <div class="recurso"><span class="recurso-tipo tipo-herramienta">Herramienta</span>Plantilla Excel de Asset Allocation personalizada (entregable del programa) — revisar y ajustar con datos reales.</div>
+              <div class="recurso"><span class="recurso-tipo tipo-lectura">Lectura</span>Capítulo 3 de <em>La psicología del dinero</em> (Morgan Housel) — "La suerte y el riesgo". Disponible en español.</div>
+              <div class="recurso"><span class="recurso-tipo tipo-podcast">Podcast</span>"Cómo construir un portafolio desde cero" — El podcast de inversión (Spotify Colombia). Episodio con analogías prácticas.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FASE 4 -->
+  <div class="fase fase-4">
+    <div class="fase-header">
+      <span class="fase-num">Fase 4</span>
+      <span class="fase-title">Proteger, planificar y sostener</span>
+      <span class="fase-subtitle">Sesiones 6–8</span>
+    </div>
+    <div class="modulos">
+
+      <!-- Sesión 6 -->
+      <div class="modulo" onclick="toggle(this)">
+        <div class="modulo-header">
+          <span class="sesion-badge">Sesión 6 · 2h</span>
+          <span class="modulo-title">Proteger lo que hay — seguros, emergencias y la casa campestre</span>
+          <span class="modulo-chevron">▼</span>
+        </div>
+        <div class="modulo-body">
+          <div class="modulo-objetivo-full">Construir la primera línea de defensa patrimonial: coberturas de seguros adecuadas, fondo de emergencia separado del portafolio, y revisión de la concentración en la propiedad campestre.</div>
+
+          <div class="subsection">
+            <div class="subsection-title">Temas de la sesión</div>
+            <ul class="temas-list">
+              <li>Fondo de emergencia: cuánto necesita (8–12 meses de gastos fijos), dónde mantenerlo (FIC renta fija CP o cuenta remunerada)</li>
+              <li>Seguro de vida: cobertura adecuada para una familia con 2 hijos y desequilibrio de ingresos. Cálculo de suma asegurada recomendada.</li>
+              <li>Seguro de hogar para propiedad campestre: coberturas mínimas en zona sísmica (Cali/región cafetera), incendio y daños</li>
+              <li>Plan complementario de salud: nivel de cobertura apropiado para su cargo e ingresos</li>
+              <li>La casa campestre como riesgo de concentración: ¿representa más del 60–70% del patrimonio neto? ¿Hay hipoteca? ¿Genera ingreso (arrendamiento)?</li>
+              <li>Cobertura cambiaria natural: por qué parte del portafolio en USD es la forma más simple de protegerse</li>
+            </ul>
+          </div>
+
+          <div class="insight-box">
+            <span class="insight-icon">⚡</span>
+            <span class="insight-text">Pregunta importante a explorar con tacto: dado que los ingresos de Lilian son mayores, ¿qué pasa con el plan de vida familiar si ella deja de trabajar? El seguro de vida y de incapacidad deben dimensionarse considerando esa asimetría.</span>
+          </div>
+
+          <div class="divider"></div>
+          <div class="subsection">
+            <div class="subsection-title">Material entre sesiones</div>
+            <div class="recursos">
+              <div class="recurso"><span class="recurso-tipo tipo-herramienta">Tarea</span>Revisar pólizas actuales de seguro de vida y hogar. Traer a la sesión 7 los documentos o al menos las sumas aseguradas actuales.</div>
+              <div class="recurso"><span class="recurso-tipo tipo-lectura">Lectura</span>"Seguros de vida: cómo saber cuánto necesitas" — Superfinanciera Colombia. Guía oficial gratuita.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sesión 7 -->
+      <div class="modulo" onclick="toggle(this)">
+        <div class="modulo-header">
+          <span class="sesion-badge">Sesión 7 · 2h</span>
+          <span class="modulo-title">Planificar el futuro — educación de los hijos, retiro y brecha pensional</span>
+          <span class="modulo-chevron">▼</span>
+        </div>
+        <div class="modulo-body">
+          <div class="modulo-objetivo-full">Cuantificar las dos metas financieras más importantes de largo plazo: la educación de los hijos (horizonte 9–11 años) y el retiro propio (horizonte 15–25 años). Que Lilian salga con números concretos y un plan de acción.</div>
+
+          <div class="subsection">
+            <div class="subsection-title">Temas de la sesión</div>
+            <ul class="temas-list">
+              <li>Meta educación hijo 1 (9 años, universidad en 9 años): simulación de costo total Colombia vs. exterior. Aporte mensual recomendado.</li>
+              <li>Meta educación hijo 2 (7 años, universidad en 11 años): mismo ejercicio con 2 años más de compounding a favor</li>
+              <li>Vehículo sugerido para educación: portafolio moderado (FIC balanceado + ETFs renta fija global) por horizonte 9–11 años</li>
+              <li>Brecha pensional de Lilian: calcular pensión estimada del fondo privado (RAIS) vs. ingreso que necesita en retiro. El déficit puede ser del 40–60%.</li>
+              <li>Plan de cierre de brecha: pensión voluntaria + portafolio de largo plazo + activos generadores de flujo pasivo</li>
+              <li>Ciclo de vida financiero: dónde está Lilian hoy (consolidación) y hacia dónde se mueve (preservación en 10–15 años)</li>
+            </ul>
+          </div>
+
+          <div class="insight-box">
+            <span class="insight-icon">⚡</span>
+            <span class="insight-text">La brecha pensional para altos ingresos en Colombia puede ser devastadora. Si Lilian gana hoy más de 10 SMMLV, su pensión del RAIS podría representar menos del 40% de su ingreso actual. Calcular este número en sesión —en pesos concretos— suele ser el momento de mayor urgencia del programa.</span>
+          </div>
+
+          <div class="divider"></div>
+          <div class="subsection">
+            <div class="subsection-title">Material entre sesiones</div>
+            <div class="recursos">
+              <div class="recurso"><span class="recurso-tipo tipo-herramienta">Herramienta</span>Simulador de pensión en el portal de su AFP (Porvenir/Protección/Old Mutual) — generar estimado de pensión proyectada con datos reales.</div>
+              <div class="recurso"><span class="recurso-tipo tipo-lectura">Lectura</span>Capítulos 10–11 de <em>La psicología del dinero</em> (Morgan Housel) — "Ahorra dinero" y "Espacio para el error".</div>
+              <div class="recurso"><span class="recurso-tipo tipo-podcast">Podcast</span>"La trampa de la pensión en Colombia" — Así Habla Colombia Económica (episodio sobre brechas pensionales para clase media-alta).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sesión 8 -->
+      <div class="modulo" onclick="toggle(this)">
+        <div class="modulo-header">
+          <span class="sesion-badge">Sesión 8 · 2.5h</span>
+          <span class="modulo-title">La ruta de Lilian — plan de acción, hoja de ruta y seguimiento</span>
+          <span class="modulo-chevron">▼</span>
+        </div>
+        <div class="modulo-body">
+          <div class="modulo-objetivo-full">Consolidar todo el aprendizaje en un plan de acción concreto, con decisiones priorizadas, indicadores de progreso y un mecanismo claro de seguimiento trimestral. Lilian sale de esta sesión sabiendo exactamente qué hacer en los próximos 6 meses.</div>
+
+          <div class="subsection">
+            <div class="subsection-title">Temas de la sesión</div>
+            <ul class="temas-list">
+              <li>Revisión del diagnóstico inicial: ¿qué cambió en la comprensión de Lilian desde la sesión 1?</li>
+              <li>Plan inmediato 0–6 meses: fondo de emergencia, pensión voluntaria, ajuste de seguros, apertura de cuenta internacional</li>
+              <li>Protocolo del bono Baxter: qué % de cada bono semestral va a cada tramo del portafolio</li>
+              <li>Plan construcción patrimonial 1–5 años: portafolio estructurado, diversificación cambiaria, ahorro educación hijos</li>
+              <li>Plan largo plazo 5+ años: cierre de brecha pensional, activos generadores de flujo pasivo, planificación sucesoral básica</li>
+              <li>Indicadores de progreso: tasa de ahorro, diversificación cambiaria, % brecha pensional cubierta, fondo de emergencia</li>
+              <li>Ciclo de revisión trimestral con asesor</li>
+            </ul>
+          </div>
+
+          <div class="insight-box">
+            <span class="insight-icon">⚡</span>
+            <span class="insight-text">Cierre poderoso: mostrarle a Lilian una proyección simple a 10 años de lo que ocurre si invierte sistemáticamente el bono semestral vs. si lo gasta. La diferencia en patrimonio suele ser de cientos de millones de pesos. Ver ese número es la mejor motivación para sostener el plan.</span>
+          </div>
+
+          <div class="divider"></div>
+          <div class="subsection">
+            <div class="subsection-title">Entregables al finalizar el programa</div>
+            <ul class="temas-list">
+              <li>Diagnóstico financiero completo en Excel (balance, flujo de caja, indicadores)</li>
+              <li>Portafolio personalizado con asset allocation por horizonte temporal</li>
+              <li>Simulador de proyección patrimonial a 10 años (incluyendo escenario con bonos Baxter)</li>
+              <li>Plan de acción priorizado con hoja de ruta clara (0–6 meses / 1–5 años / 5+ años)</li>
+              <li>Protocolo del bono semestral documentado</li>
+            </ul>
+          </div>
+
+          <div class="tarea-box">
+            <span class="insight-icon">✓</span>
+            <span class="tarea-text">Lectura final recomendada: <em>La psicología del dinero</em> (Morgan Housel, edición completa en español). Es el libro más accesible y transformador sobre finanzas personales para alguien en el punto de partida de Lilian.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggle(el) {
+  el.classList.toggle('open');
+}
+</script>
